@@ -1,12 +1,32 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head><meta charset="UTF-8"><title>Add User</title></head>-->
+<!--<body>-->
+<!--<h2>Add User</h2>-->
+<!--<form th:action="@{/users/add}" method="post">-->
+<!--    Name: <input type="text" name="name" required/><br/>-->
+<!--    <button type="submit">Add</button>-->
+<!--</form>-->
+<!--<a href="/users">Back to users</a>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head><meta charset="UTF-8"><title>Add User</title></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+</head>
 <body>
 <h2>Add User</h2>
-<form th:action="@{/users/add}" method="post">
-    Name: <input type="text" name="name" required/><br/>
+
+<form th:action="@{/users/add}" th:object="${user}" method="post">
+    First Name: <input type="text" th:field="*{name}"/>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <br/>
     <button type="submit">Add</button>
 </form>
+
 <a href="/users">Back to users</a>
+
 </body>
 </html>

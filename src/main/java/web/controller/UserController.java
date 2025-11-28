@@ -1,7 +1,9 @@
 package web.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +25,17 @@ public class UserController {
     }
 
     @GetMapping("/add")
-    public String addUserForm() {
+    public String addUserForm(Model model) {
+        model.addAttribute("user", new User());
         return "addUser";
     }
 
     @PostMapping("/add")
-    public String addUser(@RequestParam("name") String name, @RequestParam("email") String email) {
-        userService.saveUser(new User(name, email));
+    public String addUser(@Valid User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "addUser";
+        }
+        userService.saveUser(user);
         return "redirect:/users";
     }
 

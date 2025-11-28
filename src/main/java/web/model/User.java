@@ -1,6 +1,8 @@
 package web.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 
 @Entity
 @Table(name = "users")
@@ -8,11 +10,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Допустимы только буквы")
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
     @Column(name = "name",nullable = false, length = 50)
     private String name;
+    @Email(message = "Email should be valid")
     @Column(name = "email",nullable = false, length = 50)
     private String email;
+    @Min(value = 1, message = "Возраст должен быть больше 0")
     @Column(name = "age",nullable = false)
     private int age;
 
