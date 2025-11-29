@@ -13,16 +13,17 @@ public class User {
     @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Допустимы только буквы")
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
-    @Column(name = "name",nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
     @Email(message = "Email should be valid")
-    @Column(name = "email",nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
     @Min(value = 1, message = "Возраст должен быть больше 0")
-    @Column(name = "age",nullable = false)
+    @Column(name = "age", nullable = false)
     private int age;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String name, String email, int age) {
         this.name = name;
@@ -31,8 +32,6 @@ public class User {
     }
 
 
-    public User(String name, String email) {
-    }
     public void setId(Long id) {
         this.id = id;
     }
