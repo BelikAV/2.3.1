@@ -1,7 +1,12 @@
 package web.config;
 
+
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -15,15 +20,19 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource({"classpath:application.properties", "classpath:db.properties"})
 public class HibernateConfig {
+
+    @Autowired
+    private Environment env;
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/jdbc_hibernate");
-        ds.setUsername("root");
-        ds.setPassword("96321456Zxx");
+        ds.setDriverClassName(env.getProperty("db.driver"));
+        ds.setUrl(env.getProperty("db.url"));
+        ds.setUsername(env.getProperty("db.username"));
+        ds.setPassword(env.getProperty("db.password"));
         return ds;
     }
 
@@ -33,10 +42,11 @@ public class HibernateConfig {
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("web.model");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
         Properties props = new Properties();
-        props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "update");
+        props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         emf.setJpaProperties(props);
         return emf;
     }

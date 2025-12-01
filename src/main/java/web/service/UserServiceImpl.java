@@ -1,5 +1,6 @@
 package web.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.model.User;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional(readOnly=true) //по умолчанию чтение для всех методов.
 public class UserServiceImpl implements UserService {
 
 
@@ -27,17 +29,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         userDao.save(user);
 
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         userDao.delete(id);
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
         userDao.update(user);
     }
